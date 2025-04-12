@@ -1,30 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <OutputPath>..\Build\$(Configuration)\</OutputPath>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <PlatformTarget>x64</PlatformTarget>
     <RuntimeIdentifiers>osx-x64</RuntimeIdentifiers>
-    <RestoreSources>$(RestoreSources);..\\Dotnet.Bundle\\bin\\$(Configuration)\\</RestoreSources>
-    <DotnetBundleTestVersion>9.9.999952</DotnetBundleTestVersion>
-    <CustomCommands>
-      <CustomCommands>
-        <Command>
-          <type>BeforeBuild</type>
-          <command>dotnet pack ..\\Dotnet.Bundle\\ -p:Configuration=$(Configuration) -p:PackageVersion=$(DotnetBundleTestVersion)</command>
-        </Command>
-        <Command>
-          <type>BeforeBuild</type>
-          <command>dotnet restore</command>
-        </Command>
-        <Command>
-          <type>AfterBuild</type>
-          <command>dotnet msbuild -t:BundleApp -p:RuntimeIdentifier=osx-x64 -p:Configuration=$(Configuration)</command>
-         </Command>
-      </CustomCommands>
-    </CustomCommands>
+    <DotnetBundleTestVersion>0.10.0</DotnetBundleTestVersion>
   </PropertyGroup>
+
+  <Target Name="BeforeBuildCommands" BeforeTargets="Build">
+    <Exec Command="dotnet pack ../Dotnet.Bundle/ -p:Configuration=$(Configuration) -p:PackageVersion=$(DotnetBundleTestVersion)" />
+  </Target>
+  <Target Name="AfterBuildCommands" AfterTargets="Build" Condition="'$(SkipAfterBuild)' != 'true'">
+    <Exec Command="dotnet msbuild -t:BundleApp -p:RuntimeIdentifier=osx-x64 -p:Configuration=$(Configuration) -p:SkipAfterBuild=true" />
+  </Target>
+  
+  <ItemGroup>
+    <PackageReference Include="DotNet.Bundle" Version="0.10.0" />
+  </ItemGroup>
 
    <!-- Defines Info.plist -->
   <PropertyGroup>
@@ -46,8 +38,5 @@
         <CFBundleURLName>TestApp URL2</CFBundleURLName>
         <CFBundleURLSchemes>test://</CFBundleURLSchemes>
     </CFBundleURLTypes>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Dotnet.Bundle" Version="$(DotnetBundleTestVersion)" />
   </ItemGroup>
 </Project>

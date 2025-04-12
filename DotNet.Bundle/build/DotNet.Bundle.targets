@@ -1,12 +1,12 @@
 <Project TreatAsLocalProperty="TaskFolder;TaskAssembly">
 
   <PropertyGroup>
-    <TaskFolder>netstandard2.0</TaskFolder>
-    <TaskAssembly>$(MSBuildThisFileDirectory)..\tasks\$(TaskFolder)\DotNet.Bundle.dll</TaskAssembly>
+    <TaskFolder>net8.0</TaskFolder>
+    <TaskAssembly>$(MSBuildThisFileDirectory)../tasks/$(TaskFolder)/DotNet.Bundle.dll</TaskAssembly>
   </PropertyGroup>
 
   <UsingTask TaskName="DotNet.Bundle.BundleAppTask" AssemblyFile="$(TaskAssembly)" />
-  
+
   <Target Name="BundleApp" DependsOnTargets="Publish">
     
     <PropertyGroup>
@@ -58,7 +58,6 @@
       NSRequiresAquaSystemAppearance="$(NSRequiresAquaSystemAppearance)"
       CFBundleURLTypes="@(CFBundleURLTypes)"
       />
-    
   </Target>
   
 </Project>
