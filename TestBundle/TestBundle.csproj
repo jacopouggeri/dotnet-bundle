@@ -7,35 +7,38 @@
     <DotnetBundleTestVersion>0.10.0</DotnetBundleTestVersion>
   </PropertyGroup>
 
+  <!-- Pack DotNet.Bundle for testing -->
   <Target Name="BeforeBuildCommands" BeforeTargets="Build">
     <Exec Command="dotnet pack ../Dotnet.Bundle/ -p:Configuration=$(Configuration) -p:PackageVersion=$(DotnetBundleTestVersion)" />
   </Target>
+  <!-- Package using DotNet.Bundle -->
+  <!-- SkipAfterBuild is a hack to prevent an infinite build loop as running this calls on itself -->
   <Target Name="AfterBuildCommands" AfterTargets="Build" Condition="'$(SkipAfterBuild)' != 'true'">
     <Exec Command="dotnet msbuild -t:BundleApp -p:RuntimeIdentifier=osx-x64 -p:Configuration=$(Configuration) -p:SkipAfterBuild=true" />
   </Target>
   
   <ItemGroup>
-    <PackageReference Include="DotNet.Bundle" Version="0.10.0" />
+    <PackageReference Include="DotNet.Bundle" Version="*" />
   </ItemGroup>
 
    <!-- Defines Info.plist -->
   <PropertyGroup>
     <CFBundleName>TestBundle</CFBundleName> 
-    <CFBundleDisplayName>TestBundle</CFBundleDisplayName>
-    <CFBundleShortVersionString>TestBundle</CFBundleShortVersionString>
+    <CFBundleDisplayName>Test Bundle</CFBundleDisplayName>
+    <CFBundleIdentifier>org.test.testbundle</CFBundleIdentifier>
+    <CFBundleShortVersionString>1.0.0</CFBundleShortVersionString>
+    <CFBundleVersion>1.0.0</CFBundleVersion>
     <CFBundleIconFile>IconTest.icns</CFBundleIconFile>
-    <NSPrincipalClass>NSApplication</NSPrincipalClass>
-    <CFBundlePackageType>AAPL</CFBundlePackageType>
-    <CFBundleSignature>4242</CFBundleSignature>
-    <NSRequiresAquaSystemAppearance>false</NSRequiresAquaSystemAppearance>
+    <CFBundlePackageType>APPL</CFBundlePackageType>
+    <NSHighResolutionCapable>false</NSHighResolutionCapable>
   </PropertyGroup>
   <ItemGroup>
     <CFBundleURLTypes Include="dummy">
-        <CFBundleURLName>TestApp URL</CFBundleURLName>
+        <CFBundleURLName>org.test.testbundle</CFBundleURLName>
         <CFBundleURLSchemes>testappurl;testappurl://</CFBundleURLSchemes>
     </CFBundleURLTypes>
     <CFBundleURLTypes Include="dummy">
-        <CFBundleURLName>TestApp URL2</CFBundleURLName>
+        <CFBundleURLName>org.test.testbundle</CFBundleURLName>
         <CFBundleURLSchemes>test://</CFBundleURLSchemes>
     </CFBundleURLTypes>
   </ItemGroup>

@@ -20,27 +20,24 @@ dotnet msbuild -t:BundleApp -p:RuntimeIdentifier=osx-x64 [-p: ...]
 
 ### Properties
 
-Define properties to override default bundle values
+Define properties to override default bundle values. Check [TestBundle.csproj](TestBundle/TestBundle.csproj) for a working example.
 
 ```
 <PropertyGroup>
     <CFBundleName>AppName</CFBundleName> <!-- Also defines .app file name -->
     <CFBundleDisplayName>App Name</CFBundleDisplayName>
-    <CFBundleIdentifier>com.example</CFBundleIdentifier>
+    <CFBundleIdentifier>com.example.app</CFBundleIdentifier>
+    <CFBundleShortVersionString>1.0.0</CFBundleShortVersionString>
     <CFBundleVersion>1.0.0</CFBundleVersion>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>AppName</CFBundleExecutable>
     <CFBundleIconFile>AppName.icns</CFBundleIconFile> <!-- Will be copied from output directory -->
-    <NSPrincipalClass>NSApplication</NSPrincipalClass>
     <NSHighResolutionCapable>true</NSHighResolutionCapable>
-
-    <!-- Optional -->
-    <NSRequiresAquaSystemAppearance>true</NSRequiresAquaSystemAppearance>
 </PropertyGroup>
 
+<!-- Optional URLTypes -->
 <ItemGroup>
-    <!-- Optional URLTypes.Check TestBundle.csproj for a working example. -->
     <CFBundleURLTypes Include="dummy"> <!-- The name of this file is irrelevant, it's a MSBuild requirement.-->
         <CFBundleURLName>TestApp URL</CFBundleURLName>
         <CFBundleURLSchemes>testappurl;testappurl://</CFBundleURLSchemes> <!-- Note the ";" separator-->
